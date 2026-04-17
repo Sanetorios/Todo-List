@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "titre": "Faire les courses",
+    "description": "Acheter du pain, du lait et des oeufs",
+    "fait": true
+  },
+  {
+    "id": 2,
+    "titre": "Réviser JavaScript",
+    "description": "Revoir les fonctions et les tableaux",
+    "fait": false
+  },
+  {
+    "id": 4,
+    "titre": "Nouvelle tâche",
+    "description": "Test de création",
+    "fait": false
+  }
+]

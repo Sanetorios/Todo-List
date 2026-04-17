@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todo App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --surface2: #242424;
+      --accent: #f0e040;
+      --accent-dark: #c4b800;
+      --text: #f0f0f0;
+      --text-muted: #888;
+      --danger: #ff4f4f;
+      --success: #4fdc8f;
+      --border: #2e2e2e;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    /* ---- HEADER ---- */
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: var(--accent);
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 6px;
+    }
+
+    /* ---- CONTENEUR PRINCIPAL ---- */
+    .container {
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    /* ---- FORMULAIRE ---- */
+    .formulaire {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 36px;
+    }
+
+    .formulaire h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      color: var(--text);
+    }
+
+    .formulaire input,
+    .formulaire textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+
+    .formulaire input:focus,
+    .formulaire textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .formulaire input::placeholder,
+    .formulaire textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    .message-erreur {
+      color: var(--danger);
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+      display: none;
+    }
+
+    .btn-ajouter {
+      background: var(--accent);
+      color: #0f0f0f;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      width: 100%;
+    }
+
+    .btn-ajouter:hover {
+      background: var(--accent-dark);
+    }
+
+    .btn-ajouter:active {
+      transform: scale(0.98);
+    }
+
+    /* ---- LISTE ---- */
+    .liste-titre {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+
+    .aucune-tache {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      padding: 40px 0;
+      display: none;
+    }
+
+    /* ---- CARTE TÂCHE ---- */
+    .todo-carte {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      transition: border-color 0.2s, opacity 0.2s;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .todo-carte:hover {
+      border-color: #444;
+    }
+
+    .todo-carte.fait {
+      opacity: 0.45;
+    }
+
+    .todo-carte.fait .todo-titre {
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    .todo-contenu {
+      flex: 1;
+    }
+
+    .todo-titre {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .todo-description {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* ---- BOUTONS CARTE ---- */
+    .todo-boutons {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn-fait {
+      background: transparent;
+      border: 1px solid var(--success);
+      color: var(--success);
+      border-radius: 7px;
+      padding: 7px 13px;
+      font-size: 0.82rem;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-fait:hover {
+      background: var(--success);
+      color: #0f0f0f;
+    }
+
+    .btn-supprimer {
+      background: transparent;
+      border: 1px solid var(--danger);
+      color: var(--danger);
+      border-radius: 7px;
+      padding: 7px 13px;
+      font-size: 0.82rem;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-supprimer:hover {
+      background: var(--danger);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>📋 Todo App</h1>
+    <p>Gérez vos tâches simplement</p>
+  </header>
+
+  <div class="container">
+
+    <!-- Formulaire d'ajout -->
+    <div class="formulaire">
+      <h2>Nouvelle tâche</h2>
+      <p class="message-erreur" id="message-erreur">⚠ Le titre est obligatoire !</p>
+      <input type="text" id="input-titre" placeholder="Titre de la tâche *" />
+      <textarea id="input-description" placeholder="Description (optionnelle)" rows="2"></textarea>
+      <button class="btn-ajouter" id="btn-ajouter">+ Ajouter la tâche</button>
+    </div>
+
+    <!-- Liste des tâches -->
+    <p class="liste-titre">Mes tâches</p>
+    <div id="liste-todos">
+      <p class="aucune-tache" id="aucune-tache">Aucune tâche pour l'instant 🎉</p>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
